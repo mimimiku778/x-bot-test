@@ -1,23 +1,28 @@
-name: Generate and Post to X
+name: Generate AI Message and Post to X
 
 on:
-  issues:
-    types: [opened, edited]
-  issue_comment:
-    types: [created, edited]
+  workflow_dispatch:
+    inputs:
+      theme:
+        description: 'メッセージのテーマ（任意）'
+        required: false
+        type: string
+        default: '今日は何の日'
+      additional_prompt:
+        description: '追加の指示（任意）'
+        required: false
+        type: string
 
 permissions:
   contents: write
-  issues: write
-  pull-requests: write
 
 jobs:
   generate-and-post:
     runs-on: ubuntu-latest
-    if: contains(github.event.comment.body || github.event.issue.body, '@claude-generate')
     
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
     
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -28,15 +33,40 @@ jobs:
     - name: Install dependencies
       run: npm ci
     
-    - name: Generate AI message
-      uses: anthropics/claude-code-action@beta
+    - name: Generate AI message with Claude Code
+      uses: anthropics/claude-code-base-action@beta
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        prompt: |
+          src/index.jsファイルのmessage変数の内容を更新してください。
+          
+          テーマ: ${{ inputs.theme || '今日は何の日' }}
+          
+          以下の要件でメッセージを生成してください：
+          1. 【GitHub Actions + claude-code-base-action】プレフィックスを付ける
+          2. テーマに関連した創造的で興味深い内容にする
+          3. 日本語で書く
+          4. X(Twitter)の文字数制限を考慮する
+          5. 絵文字を適切に使用する
+          6. タイムスタンプは既存のコードで自動追加されるので含めない
+          
+          ${{ inputs.additional_prompt && format('追加の指示: {0}', inputs.additional_prompt) || '' }}
+          
+          replyMessageも関連する内容に更新してください。
+        allowed_tools: "View,Edit,Write"
         claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-        trigger_phrase: "@claude-generate"
-        direct_prompt: |
-          src/index.jsのメッセージを「今日は何の日」に関連したAI生成メッセージに変更してください。
-          【GitHub Actions + Claude Code AI生成】プレフィックス付きで創造的な内容にしてください。
+        max_turns: "5"
+    
+    - name: Commit changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add src/index.js
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+        else
+          git commit -m "Update message with AI-generated content"
+          git push
+        fi
     
     - name: Post to X
       env:
