@@ -1,0 +1,25 @@
+name: Claude Message Generator
+
+on:
+  issues:
+    types: [opened, edited]
+  issue_comment:
+    types: [created, edited]
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    if: contains(github.event.comment.body || github.event.issue.body, '@claude-generate')
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Generate AI message
+      uses: anthropics/claude-code-action@beta
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+        trigger_phrase: "@claude-generate"
+        direct_prompt: |
+          src/index.jsのメッセージを「今日は何の日」に関連したAI生成メッセージに変更してください。
+          【AI生成】プレフィックス付きで創造的な内容にしてください。

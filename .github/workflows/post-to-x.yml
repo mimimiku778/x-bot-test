@@ -1,6 +1,8 @@
 name: Post to X (Twitter)
 
 on:
+  schedule:
+    - cron: '0 23 * * *'
   workflow_dispatch:
 
 jobs:
@@ -16,15 +18,6 @@ jobs:
         cache: 'npm'
     
     - run: npm ci
-    
-    - name: Generate AI message
-      uses: anthropics/claude-code-action@beta
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-        direct_prompt: |
-          src/index.jsのメッセージを「今日は何の日」に関連したAI生成メッセージに変更してください。
-          【GitHub Actions + Claude Code AI生成】プレフィックス付きで創造的な内容にしてください。
     
     - name: Post to X
       env:
