@@ -6,8 +6,7 @@
   "type": "module",
   "scripts": {
     "post": "node src/index.js",
-    "post:local": "NODE_ENV=development node src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "post:local": "NODE_ENV=development node src/index.js"
   },
   "keywords": ["twitter", "x", "bot", "automation"],
   "author": "",
