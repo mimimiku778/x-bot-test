@@ -39,7 +39,7 @@ jobs:
         prompt: |
           src/index.jsファイルのmessage変数の内容を更新してください。
           
-          テーマ: ${{ inputs.theme || '今日は何の日' }}
+          テーマ: ${{ inputs.theme || 'ずんだもんはもうこんな時間になってしまったから寝るのだ' }}
           
           以下の要件でメッセージを生成してください：
           1. 【GitHub Actions + claude-code-base-action】プレフィックスを付ける
