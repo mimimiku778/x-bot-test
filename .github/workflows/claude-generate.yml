@@ -1,0 +1,65 @@
+name: Generate AI Message and Post to X
+
+on:
+  workflow_dispatch:
+    inputs:
+      theme:
+        description: 'メッセージのテーマ（任意）'
+        required: false
+        type: string
+        default: '今日は何の日'
+      additional_prompt:
+        description: '追加の指示（任意）'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  generate-and-post:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Generate AI message with Claude Code
+      uses: anthropics/claude-code-base-action@beta
+      with:
+        prompt: |
+          src/index.jsファイルのmessage変数の内容を更新してください。
+          
+          テーマ: ${{ inputs.theme || 'ずんだもんはもうこんな時間になってしまったから寝るのだ' }}
+          
+          以下の要件でメッセージを生成してください：
+          1. 【GitHub Actions + claude-code-base-action】プレフィックスを付ける
+          2. テーマに関連した創造的で興味深い内容にする
+          3. 日本語で書く
+          4. X(Twitter)の文字数制限を考慮する
+          5. 絵文字を適切に使用する
+          6. タイムスタンプは既存のコードで自動追加されるので含めない
+          
+          ${{ inputs.additional_prompt && format('追加の指示: {0}', inputs.additional_prompt) || '' }}
+          
+          replyMessageも関連する内容に更新してください。
+        allowed_tools: "View,Edit,Write"
+        claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        max_turns: "5"
+
+    - name: Post to X
+      env:
+        TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
+        TWITTER_API_SECRET: ${{ secrets.TWITTER_API_SECRET }}
+        TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
+        TWITTER_ACCESS_TOKEN_SECRET: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
+      run: npm run post
