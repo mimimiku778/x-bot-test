@@ -1,4 +1,4 @@
-# OC X Bot with Claude Code
+# X Bot with Claude Code
 
 GitHub ActionsとClaude Code Base Actionを使用して、AI生成メッセージをX(Twitter)に投稿するボットです。
 
