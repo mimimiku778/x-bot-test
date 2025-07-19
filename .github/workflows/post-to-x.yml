@@ -1,19 +1,28 @@
 name: Post to X (Twitter)
 
 on:
-  schedule:
-    # 毎日日本時間の朝8時に実行 (UTC 23:00)
-    - cron: '0 23 * * *'
-  # 手動実行も可能にする
   workflow_dispatch:
 
 jobs:
-  post:
+  generate-and-post:
     runs-on: ubuntu-latest
     
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+    
+    - name: Generate message with Claude Code
+      uses: anthropics/claude-code@v1
+      with:
+        api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+        prompt: |
+          今日の日付に関連した短いテスト投稿メッセージを生成してください。
+          以下のJSONフォーマットで、src/generate-message.jsのsaveGeneratedMessage関数を使って保存してください：
+          - mainMessage: メインツイート用の短いメッセージ（50文字以内）
+          - replyMessage: リプライ用の短いメッセージ（30文字以内）
+          
+          例:
+          saveGeneratedMessage("今日もテスト投稿を実行中です", "リプライのテストです");
     
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -24,10 +33,11 @@ jobs:
     - name: Install dependencies
       run: npm ci
     
-    - name: Post to X
+    - name: Post to X with generated message
       env:
         TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
         TWITTER_API_SECRET: ${{ secrets.TWITTER_API_SECRET }}
         TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
         TWITTER_ACCESS_TOKEN_SECRET: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
+        USE_GENERATED_MESSAGE: 'true'
       run: npm run post
