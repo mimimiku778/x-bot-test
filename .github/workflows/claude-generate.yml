@@ -55,19 +55,7 @@ jobs:
         allowed_tools: "View,Edit,Write"
         claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
         max_turns: "5"
-    
-    - name: Commit changes
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add src/index.js
-        if git diff --staged --quiet; then
-          echo "No changes to commit"
-        else
-          git commit -m "Update message with AI-generated content"
-          git push
-        fi
-    
+
     - name: Post to X
       env:
         TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
