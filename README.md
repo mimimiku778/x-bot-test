@@ -24,7 +24,7 @@ GitHub ActionsとClaude Code Base Actionを使用して、AI生成メッセー�
 
 以下のシークレットをGitHubリポジトリに設定してください：
 
-- `ANTHROPIC_API_KEY`: Claude APIキー
+- `CLAUDE_CODE_OAUTH_TOKEN`: Claude トークン
 - `TWITTER_API_KEY`: X(Twitter) APIキー
 - `TWITTER_API_SECRET`: X(Twitter) APIシークレット
 - `TWITTER_ACCESS_TOKEN`: X(Twitter)アクセストークン
