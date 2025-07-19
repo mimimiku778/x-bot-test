@@ -27,4 +27,4 @@ jobs:
         trigger_phrase: "@claude-generate"
         direct_prompt: |
           src/index.jsのメッセージを「今日は何の日」に関連したAI生成メッセージに変更してください。
-          【AI生成】プレフィックス付きで創造的な内容にしてください。
+          【GitHub Actions + Claude Code生成】プレフィックス付きで創造的な内容にしてください。
