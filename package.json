@@ -1,0 +1,19 @@
+{
+  "name": "x-auto-poster",
+  "version": "1.0.0",
+  "description": "Automated X (Twitter) posting bot using GitHub Actions",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "post": "node src/index.js",
+    "post:local": "NODE_ENV=development node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["twitter", "x", "bot", "automation"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "twitter-api-v2": "^1.15.0",
+    "dotenv": "^16.3.1"
+  }
+}
