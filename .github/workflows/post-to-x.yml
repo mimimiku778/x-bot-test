@@ -1,8 +1,6 @@
 name: Post to X (Twitter)
 
 on:
-  schedule:
-    - cron: '0 23 * * *'
   workflow_dispatch:
 
 jobs:
