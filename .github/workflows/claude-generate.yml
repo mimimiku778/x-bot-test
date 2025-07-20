@@ -4,12 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       theme:
-        description: 'メッセージのテーマ（任意）'
+        description: 'Message theme (optional)'
         required: false
         type: string
-        default: '今日は何の日'
+        default: "What's happening today"
       additional_prompt:
-        description: '追加の指示（任意）'
+        description: 'Additional instructions (optional)'
         required: false
         type: string
 
@@ -37,21 +37,21 @@ jobs:
       uses: anthropics/claude-code-base-action@beta
       with:
         prompt: |
-          src/index.jsファイルのmessage変数の内容を更新してください。
+          Please update the content of the message variable in the src/index.js file.
           
-          テーマ: ${{ inputs.theme || '今日は何の日？' }}
+          Theme: ${{ inputs.theme || "What's happening today?" }}
           
-          以下の要件でメッセージを生成してください：
-          1. 【GitHub Actions + claude-code-base-action】プレフィックスを付ける
-          2. テーマに関連した創造的で興味深い内容にする
-          3. 日本語で書く
-          4. X(Twitter)の文字数制限を考慮する（半角240文字・全角120文字）
-          5. 絵文字を適切に使用する
-          6. タイムスタンプは既存のコードで自動追加されるので含めない
+          Please generate a message with the following requirements:
+          1. Add the [GitHub Actions + claude-code-base-action] prefix
+          2. Make it creative and interesting content related to the theme
+          3. Write in English
+          4. Consider X (Twitter) character limits (240 half-width characters/120 full-width characters)
+          5. Use emojis appropriately
+          6. Do not include timestamps as they are automatically added by existing code
           
-          ${{ inputs.additional_prompt && format('追加の指示: {0}', inputs.additional_prompt) || '' }}
+          ${{ inputs.additional_prompt && format('Additional instructions: {0}', inputs.additional_prompt) || '' }}
           
-          replyMessageも関連する内容に更新してください。
+          Please also update replyMessage with related content.
         allowed_tools: "View,Edit,Write"
         claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
         max_turns: "5"
