@@ -5,9 +5,8 @@ GitHub ActionsとClaude Code Base Actionを使用して、AI生成メッセー�
 ## 機能
 
 - Claude Code Base Actionを使用してAIメッセージを生成
-- workflow_dispatch（手動実行）でのみ動作
+- workflow_dispatchで動作
 - カスタマイズ可能なテーマと追加指示
-- 生成されたメッセージを自動的にコミット
 - X(Twitter)への自動投稿とリプライ
 
 ## 使い方
