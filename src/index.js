@@ -12,16 +12,16 @@ const client = new TwitterApi({
 
 async function postTweet() {
   try {
-    const timestamp = new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
+    const timestamp = new Date().toLocaleString('en-US', { timeZone: 'Asia/Tokyo' });
     let message;
     let replyMessage;
     
     if (process.env.NODE_ENV === 'development') {
-      message = `【開発環境テスト】\nローカル環境からのテスト投稿です。\n\n${timestamp}`;
-      replyMessage = `テストリプライです。`;
+      message = `[Development Environment Test]\nTest post from local environment.\n\n${timestamp}`;
+      replyMessage = `Test reply.`;
     } else {
-      message = `【GitHub Actions テスト】\nClaude Code生成メッセージのテスト投稿です。\n\n${timestamp}`;
-      replyMessage = `リプライ機能のテストです。`;
+      message = `[GitHub Actions Test]\nClaude Code generated message test post.\n\n${timestamp}`;
+      replyMessage = `Reply feature test.`;
     }
     
     const tweet = await client.v2.tweet(message);
