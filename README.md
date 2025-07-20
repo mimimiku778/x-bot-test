@@ -32,9 +32,7 @@ GitHub ActionsとClaude Code Base Actionを使用して、AI生成メッセー�
 ## ワークフローの動作
 
 1. Claude Code Base Actionが`src/index.js`のメッセージを更新
-2. 変更を自動的にコミット＆プッシュ
-3. 更新されたメッセージをX(Twitter)に投稿
-4. 投稿後、自動的にリプライも送信
+2. 更新されたメッセージをX(Twitter)に投稿
 
 ## カスタマイズ
 
